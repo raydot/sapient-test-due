@@ -38,6 +38,7 @@ const Wizard = (props) => {
 
   return (
     <div>
+      <Header width={foo} />
       <Steps
         wizardContext={props.wizardContext}
         onAction={onAction}

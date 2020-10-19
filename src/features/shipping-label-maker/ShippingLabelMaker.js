@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Wizard from "../../core/components/wizard/Wizard";
 
-import Step01 from "./s01GetSenderAddress";
 //import Header from "./Header";
 
 // This component's job is to pass in some info and get back a shipping label.
@@ -13,7 +12,7 @@ import Step01 from "./s01GetSenderAddress";
 // onComplete: PropTypes.func.isRequired,
 
 function header() {
-  console.log("jup aro");
+  return "Shipping Label Maker";
 }
 
 const ShippingLabelMaker = () => {
@@ -38,17 +37,15 @@ const ShippingLabelMaker = () => {
 
   const [shippingInfo, setShippingInfo] = useState(shippingInfoTemplate);
 
-  const [steps, setSteps] = useState([Step01]);
-
   const onComplete = () => {};
 
   return (
     <div>
       <Wizard
-        //header={header}
+        header={() => header}
         //steps={steps}
         wizardContext={shippingInfo}
-        //onComplete={onComplete}
+        onComplete={onComplete}
       />
     </div>
   );

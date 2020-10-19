@@ -1,9 +1,26 @@
-import React, { useState, PropTypes } from "react";
-import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import {
+  Container,
+  Col,
+  Row,
+  Form,
+  Button,
+  ButtonGroup,
+  ToggleButton,
+} from "react-bootstrap";
 
 const Steps = ({ wizardContext, onAction, whichStep }) => {
-  console.log("steps", wizardContext);
-  //const [action, setAction] = useState(0);
+  const ActionButtons = ( // Not in use right now
+    <Container>
+      <Button variant='primary' onClick={() => onAction(1)}>
+        Previous
+      </Button>{" "}
+      <Button variant='primary' onClick={() => onAction(2)}>
+        Next
+      </Button>
+    </Container>
+  );
 
   const Step1 = (
     <Container>
@@ -30,8 +47,11 @@ const Steps = ({ wizardContext, onAction, whichStep }) => {
             <Form.Control placeholder='Zip'></Form.Control>
           </Col>
         </Row>
-
-        <Button variant='primary' onClick={() => onAction(2)}>
+        <Button
+          variant='primary'
+          className='elbowRoom'
+          onClick={() => onAction(2)}
+        >
           Next
         </Button>
       </Form>
@@ -64,10 +84,18 @@ const Steps = ({ wizardContext, onAction, whichStep }) => {
           </Col>
         </Row>
       </Form>
-      <Button variant='primary' onClick={() => onAction(1)}>
+      <Button
+        variant='primary'
+        className='elbowRoom'
+        onClick={() => onAction(1)}
+      >
         Previous
       </Button>{" "}
-      <Button variant='primary' onClick={() => onAction(2)}>
+      <Button
+        variant='primary'
+        className='elbowRoom'
+        onClick={() => onAction(2)}
+      >
         Next
       </Button>
     </Container>
@@ -78,39 +106,67 @@ const Steps = ({ wizardContext, onAction, whichStep }) => {
       <h3>Enter the package weight:</h3>
       <Form>
         <Row>
-          <Col lg={12}>
+          <Col lg={4}> </Col>
+          <Col lg={4}>
             <Form.Control placeholder='Weight in Pounds'></Form.Control>
           </Col>
+          <Col lg={4}> </Col>
         </Row>
       </Form>
-      <Button variant='primary' onClick={() => onAction(1)}>
+      <Button
+        variant='primary'
+        className='elbowRoom'
+        onClick={() => onAction(1)}
+      >
         Previous
       </Button>{" "}
-      <Button variant='primary' onClick={() => onAction(2)}>
+      <Button
+        variant='primary'
+        className='elbowRoom'
+        onClick={() => onAction(2)}
+      >
         Next
       </Button>
     </Container>
   );
 
+  const [shipping, setShipping] = useState("Ground");
+  const shippingButtons = [
+    { caption: "Ground", value: "ground" },
+    { caption: "Priority", value: "priority" },
+  ];
   const Step4 = (
     <Container>
       <h3>Please choose a shipping option</h3>
       <Form>
-        <div className='radio'>
-          <label>
-            <input type='radio' value='ground' checked={true} /> Ground
-          </label>
-        </div>
-        <div className='radio'>
-          <label>
-            <input type='radio' value='priority' /> Priority
-          </label>
-        </div>
+        <ButtonGroup toggle>
+          {shippingButtons.map((radio, index) => (
+            <ToggleButton
+              variant='secondary'
+              key={index}
+              type='radio'
+              name='radio'
+              value={radio.value}
+              checked={shipping === radio.value}
+              onChange={(e) => setShipping(e.currentTarget.value)}
+            >
+              {radio.caption}
+            </ToggleButton>
+          ))}
+        </ButtonGroup>
       </Form>
-      <Button variant='primary' onClick={() => onAction(1)}>
+      <Button
+        variant='primary'
+        className='elbowRoom'
+        onClick={() => onAction(1)}
+      >
         Previous
       </Button>{" "}
-      <Button variant='primary' onClick={() => onAction(2)}>
+      <Button
+        variant='primary'
+        className='elbowRoom'
+        onClick={() => onAction(2)}
+      >
         Next
       </Button>
     </Container>
@@ -123,8 +179,37 @@ const Steps = ({ wizardContext, onAction, whichStep }) => {
         Click "Previous" if you need to make changes or click "Create Label" if
         you are done.{" "}
       </h3>
-      <Button onClick={() => onAction(1)}>Previous</Button>{" "}
-      <Button onClick={() => onAction(3)}>Create Label</Button>
+      <Row>
+        <h4>Shipper Information</h4>
+        <Row>
+          <Col lg={12}>{wizardContext.from.name}</Col>
+        </Row>
+        <Row>{wizardContext.from.street}</Row>
+        <Row>
+          {wizardContext.from.city}, {wizardContext.from.state}{" "}
+          {wizardContext.from.zip}
+        </Row>
+      </Row>
+      <Row>
+        <h4>Receiver Information</h4>
+      </Row>
+      <Row>{wizardContext.to.name}</Row>
+      <Row>{wizardContext.to.street}</Row>
+      <Row>
+        {wizardContext.to.city}, {wizardContext.to.state} {wizardContext.to.zip}
+      </Row>
+      <Row>
+        <Row>
+          <Col lg={6}>Package Weight: {wizardContext.weight} pounds</Col>
+          <Col lg={6}>Shipping Option: {wizardContext.shippingOption}</Col>
+        </Row>
+      </Row>
+      <Button className='elbowRoom' onClick={() => onAction(1)}>
+        Previous
+      </Button>{" "}
+      <Button className='elbowRoom' onClick={() => onAction(3)}>
+        Create Label
+      </Button>
     </Container>
   );
 
@@ -150,8 +235,8 @@ const Steps = ({ wizardContext, onAction, whichStep }) => {
 };
 
 Steps.propTypes = {
-  //wizardContext: PropTypes.object.isRequired,
-  //onAction: PropTypes.func.isRequired,
+  wizardContext: PropTypes.object.isRequired,
+  onAction: PropTypes.func.isRequired,
 };
 
 export default Steps;
